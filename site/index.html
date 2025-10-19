@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YouTube to Markdown Converter</title>
+
+        <script type="text/javascript">
+            function convert() {
+                // Video ID from https://webapps.stackexchange.com/a/101153
+                const video_id_regex = /https:\/\/(?:www\.)?youtube.com\/watch\?v=([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw])/;
+                const markdown_dest = document.getElementById("markdown_dest");
+
+                const video_url = document.getElementById('youtube_url_src').value;
+                const match_result = video_id_regex.exec(video_url);
+
+                let video_id = "";
+                if(match_result == null) {
+                    markdown_dest.innerHTML = "Please enter a valid YouTube url";
+                    return;
+                }
+                video_id = match_result[1];
+
+                const alt_text_src = document.getElementById("alt_text_src");
+                let alt_text = "Video 1";
+                if(alt_text_src.value != "") {
+                    alt_text = alt_text_src.value;
+                }
+
+                markdown_dest.innerHTML = `[![${alt_text}](https://img.youtube.com/vi/${video_id}/maxresdefault.jpg)](https://www.youtube.com/watch?v=${video_id})`
+            }
+        </script>
+
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+
+                color: #e8e6e3;
+                background: #181a1b;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-items: space-between;
+            }
+
+            .spacer {
+                flex-grow: 1;
+            }
+
+            .general_flex {
+                display: flex;
+                flex-direction: column;
+                justify-items: space-between;
+                align-items: center;
+                align-content: space-between;
+            }
+
+            #center_row {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            #main_content {
+                /* border: solid 3px #e8e6e3; */
+                border: solid 3px black;
+                border: solid 3px #8c8273;
+                border-radius: 30px;
+
+                padding-right: 10px;
+                padding-left: 10px;
+                padding-bottom: 15px;
+
+                min-width: 130ch;
+            }
+
+            #markdown_dest {
+                min-height: 20px;
+            }
+
+            #convert_button {
+                min-width: 30%;
+                min-height: 20%;
+                flex-grow: 1;
+
+                color: #e8e6e3;
+                background: #26252C;
+                corner-radius: 2px;
+                border-radius: 5px;
+            }
+
+            input[type="text"] {
+                margin-bottom: 15px;
+                color: #d8d4cf;
+                /* color: #cdc8c2; */
+                background: #222225;
+                /* border-color: #766e61; */
+                border: solid 1px #404046;
+            }
+
+            label, p {
+                font-weight: bold;
+            }
+
+            /* #bottom_spacer { */
+            /*     min-height: 60% */
+            /* } */
+
+            #top_spacer {
+                max-height: 25%;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="spacer" id="top_spacer"></div>
+
+        <div id="center_row">
+            <div class="spacer"></div>
+
+            <div class="general_flex" id="main_content">
+                <h1>YouTube to Markdown Converter</h1>
+
+                <div id="instructions">
+                    <h3>Instructions:</h3>
+                    <ol>
+                        <li>Enter a YouTube url</li>
+                        <li>(Optionally) Enter some alt text</li>
+                        <li>Click "Convert"</li>
+                        <li>Copy the generated markdown into a markdown file</li>
+                    </ol>
+                </div>
+
+                <div class="general_flex" id="convert_controls">
+                    <label for="youtube_url_src">YouTube Url:</label>
+                    <input type="text" name="youtube_url_src" id="youtube_url_src" size="40" placeholder=" YouTube Url"/>
+
+                    <label for="alt_text_src">Alt Text:</label>
+                    <input type="text" name="alt_text_src" id="alt_text_src" size="40" placeholder=" Video 1"/>
+
+                    <button id="convert_button" onclick="convert()">Convert</button>
+                </div>
+
+                <div class="general_flex" id="markdown_controls">
+                    <h2>Markdown:</h2>
+                    <div id="markdown_dest">Follow the instructions above to generate markdown from a YouTube url</div>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+        </div>
+
+        <div class="spacer" id="bottom_spacer"></div>
+    </body>
+</html>
